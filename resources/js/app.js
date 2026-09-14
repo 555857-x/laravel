@@ -1,1 +1,1 @@
-import './bootstrap';
+console.log('Website portfolio berhasil dijalankan.');
