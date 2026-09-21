@@ -2,16 +2,24 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title') - Portfolio</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>@yield('title', 'Portofolio Saya')</title>
+
+    @vite([
+        'resources/css/app.css',
+        'resources/js/app.js'
+    ])
 </head>
+
 <body>
     @include('partials.navbar')
 
-    <main class="container">
+    <main>
         @yield('content')
     </main>
 
