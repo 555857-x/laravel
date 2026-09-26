@@ -65,10 +65,7 @@
                 <h2 style="margin-top: 0; margin-bottom: 8px;">
                     <a
                         href="{{ route('projects.show', $project->id) }}"
-                        style="
-                            color: #2563eb;
-                            text-decoration: none;
-                        "
+                        style="color: #2563eb; text-decoration: none;"
                     >
                         {{ $project->title }}
                     </a>
@@ -84,18 +81,12 @@
                 </p>
 
                 <p style="line-height: 1.7;">
-                    {{ \Illuminate\Support\Str::limit(
-                        $project->description,
-                        180
-                    ) }}
+                    {{ \Illuminate\Support\Str::limit($project->description, 180) }}
                 </p>
 
                 <a
                     href="{{ route('projects.show', $project->id) }}"
-                    style="
-                        color: #2563eb;
-                        text-decoration: none;
-                    "
+                    style="color: #2563eb; text-decoration: none;"
                 >
                     Lihat detail
                 </a>

@@ -23,13 +23,15 @@ class ProjectController extends Controller
     {
         $validated = $request->validate(
             [
-                'title' => 'required|max:200',
-                'description' => 'required',
+                'title' => 'required|string|min:5|max:200',
+                'description' => 'required|string|min:10',
             ],
             [
                 'title.required' => 'Judul project wajib diisi.',
+                'title.min' => 'Judul project minimal 5 karakter.',
                 'title.max' => 'Judul project maksimal 200 karakter.',
                 'description.required' => 'Deskripsi project wajib diisi.',
+                'description.min' => 'Deskripsi project minimal 10 karakter.',
             ]
         );
 
@@ -40,25 +42,45 @@ class ProjectController extends Controller
             ->with('success', 'Project berhasil ditambahkan.');
     }
 
-    public function show(string $id)
+    public function show(Project $project)
     {
-        $project = Project::findOrFail($id);
-
         return view('projects.show', compact('project'));
     }
 
-    public function edit(string $id)
+    public function edit(Project $project)
     {
-        //
+        return view('projects.edit', compact('project'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $validated = $request->validate(
+            [
+                'title' => 'required|string|min:5|max:200',
+                'description' => 'required|string|min:10',
+            ],
+            [
+                'title.required' => 'Judul project wajib diisi.',
+                'title.min' => 'Judul project minimal 5 karakter.',
+                'title.max' => 'Judul project maksimal 200 karakter.',
+                'description.required' => 'Deskripsi project wajib diisi.',
+                'description.min' => 'Deskripsi project minimal 10 karakter.',
+            ]
+        );
+
+        $project->update($validated);
+
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Project berhasil diperbarui.');
     }
 
-    public function destroy(string $id)
+    public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Project berhasil dihapus.');
     }
 }
