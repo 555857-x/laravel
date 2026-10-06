@@ -13,4 +13,4 @@ class Project extends Model
         'title',
         'description',
     ];
-}
+}   
