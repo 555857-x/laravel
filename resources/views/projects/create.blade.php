@@ -44,6 +44,7 @@
                 border-radius: 8px;
             "
         >
+            {{-- Token ini diperlukan saat form mengirim data dengan POST. --}}
             @csrf
 
             <div style="margin-bottom: 20px;">

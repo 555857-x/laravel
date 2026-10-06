@@ -24,6 +24,7 @@
                 {{ $project->created_at->format('d-m-Y H:i') }}
             </p>
 
+            {{-- Deskripsi di-escape lebih dulu, lalu baris barunya ditampilkan. --}}
             <div style="margin-top: 24px; line-height: 1.8;">
                 {!! nl2br(e($project->description)) !!}
             </div>

@@ -41,6 +41,54 @@
             </a>
         </div>
 
+        {{-- Pencarian memakai GET supaya kata kunci tetap ada pada URL halaman. --}}
+        <form
+            action="{{ route('projects.index') }}"
+            method="GET"
+            style="display: flex; gap: 8px; margin-bottom: 24px;"
+        >
+            <input
+                type="search"
+                name="search"
+                value="{{ $search }}"
+                placeholder="Cari judul project"
+                aria-label="Cari judul project"
+                style="
+                    flex: 1;
+                    padding: 10px 12px;
+                    border: 1px solid #cccccc;
+                    border-radius: 6px;
+                "
+            >
+
+            <button
+                type="submit"
+                style="
+                    padding: 10px 16px;
+                    color: white;
+                    background: #2563eb;
+                    border: 0;
+                    border-radius: 6px;
+                    cursor: pointer;
+                "
+            >
+                Cari
+            </button>
+
+            @if ($search !== '')
+                <a
+                    href="{{ route('projects.index') }}"
+                    style="
+                        padding: 10px 12px;
+                        color: #374151;
+                        text-decoration: none;
+                    "
+                >
+                    Reset
+                </a>
+            @endif
+        </form>
+
         @if (session('success'))
             <div style="
                 padding: 14px 16px;
@@ -99,12 +147,45 @@
                 border: 1px dashed #9ca3af;
                 border-radius: 8px;
             ">
-                <h2>Belum ada project</h2>
+                <h2>
+                    {{ $search !== '' ? 'Project tidak ditemukan' : 'Belum ada project' }}
+                </h2>
 
                 <p>
-                    Tambahkan data project melalui form tambah project.
+                    {{ $search !== '' ? 'Coba kata kunci lain.' : 'Tambahkan data project melalui form tambah project.' }}
                 </p>
             </div>
         @endforelse
+
+        @if ($projects->hasPages())
+            <div
+                role="navigation"
+                aria-label="Halaman project"
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 12px;
+                    margin-top: 24px;
+                "
+            >
+                @if ($projects->onFirstPage())
+                    <span>Sebelumnya</span>
+                @else
+                    <a href="{{ $projects->previousPageUrl() }}">Sebelumnya</a>
+                @endif
+
+                <span>
+                    Halaman {{ $projects->currentPage() }}
+                    dari {{ $projects->lastPage() }}
+                </span>
+
+                @if ($projects->hasMorePages())
+                    <a href="{{ $projects->nextPageUrl() }}">Berikutnya</a>
+                @else
+                    <span>Berikutnya</span>
+                @endif
+            </div>
+        @endif
     </section>
 @endsection

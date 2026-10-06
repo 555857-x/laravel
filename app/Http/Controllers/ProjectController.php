@@ -7,11 +7,21 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::all();
+        $search = $request->query('search', '');
+        $search = is_string($search) ? trim($search) : '';
 
-        return view('projects.index', compact('projects'));
+        // Filter sebelum paginate agar halaman mengikuti hasil pencarian.
+        $query = Project::query();
+
+        if ($search !== '') {
+            $query->search($search);
+        }
+
+        $projects = $query->latest()->paginate(10)->withQueryString();
+
+        return view('projects.index', compact('projects', 'search'));
     }
 
     public function create()
@@ -44,6 +54,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        // Route model binding mencari project dari ID URL secara otomatis.
         return view('projects.show', compact('project'));
     }
 

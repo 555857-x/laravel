@@ -9,4 +9,5 @@ Route::view('/about', 'about')->name('about');
 
 Route::view('/education', 'education')->name('education');
 
+// Satu resource route menghubungkan aksi CRUD ke ProjectController.
 Route::resource('projects', ProjectController::class);

@@ -44,13 +44,18 @@
                 border-radius: 8px;
             "
         >
+            {{-- Form HTML mengirim POST; Laravel membacanya sebagai PUT. --}}
             @csrf
             @method('PUT')
 
             <div style="margin-bottom: 20px;">
                 <label
                     for="title"
-                    style="display: block; margin-bottom: 8px; font-weight: bold;"
+                    style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                    "
                 >
                     Judul Project
                 </label>
@@ -71,7 +76,11 @@
                 >
 
                 @error('title')
-                    <small style="display: block; margin-top: 6px; color: #dc2626;">
+                    <small style="
+                        display: block;
+                        margin-top: 6px;
+                        color: #dc2626;
+                    ">
                         {{ $message }}
                     </small>
                 @enderror
@@ -80,7 +89,11 @@
             <div style="margin-bottom: 20px;">
                 <label
                     for="description"
-                    style="display: block; margin-bottom: 8px; font-weight: bold;"
+                    style="
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: bold;
+                    "
                 >
                     Deskripsi Project
                 </label>
@@ -100,7 +113,11 @@
                 >{{ old('description', $project->description) }}</textarea>
 
                 @error('description')
-                    <small style="display: block; margin-top: 6px; color: #dc2626;">
+                    <small style="
+                        display: block;
+                        margin-top: 6px;
+                        color: #dc2626;
+                    ">
                         {{ $message }}
                     </small>
                 @enderror
