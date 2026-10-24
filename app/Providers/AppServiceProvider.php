@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Project;
+use App\Observers\ProjectObserver;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Tombol pagination memakai tampilan Bootstrap 5.
+        Paginator::useBootstrapFive();
+
+        // Daftarkan observer untuk model Project.
+        Project::observe(ProjectObserver::class);
     }
 }

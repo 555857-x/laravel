@@ -3,189 +3,98 @@
 @section('title', 'Projects')
 
 @section('content')
-    <section style="
-        max-width: 900px;
-        min-height: 500px;
-        margin: 40px auto;
-        padding: 0 20px;
-    ">
-        <div style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 30px;
-        ">
+    <section style="max-width: 1100px; min-height: 500px; margin: 40px auto; padding: 0 20px;">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
             <div>
-                <h1 style="margin-bottom: 8px;">
-                    Projects
-                </h1>
-
-                <p style="margin: 0; color: #6b7280;">
-                    Beberapa project yang pernah saya kerjakan.
-                </p>
+                <h1 class="mb-1">Projects</h1>
+                <p class="text-muted mb-0">Beberapa project yang pernah saya kerjakan.</p>
             </div>
 
-            <a
-                href="{{ route('projects.create') }}"
-                style="
-                    display: inline-block;
-                    padding: 10px 16px;
-                    color: white;
-                    background-color: #2563eb;
-                    border-radius: 6px;
-                    text-decoration: none;
-                "
-            >
-                Tambah Project
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('projects.trash') }}" class="btn btn-outline-secondary">
+                    Trash ({{ $totalTrash }})
+                </a>
+                <a href="{{ route('projects.create') }}" class="btn btn-primary">
+                    Tambah Project
+                </a>
+            </div>
         </div>
 
-        {{-- Pencarian memakai GET supaya kata kunci tetap ada pada URL halaman. --}}
-        <form
-            action="{{ route('projects.index') }}"
-            method="GET"
-            style="display: flex; gap: 8px; margin-bottom: 24px;"
-        >
-            <input
-                type="search"
-                name="search"
-                value="{{ $search }}"
-                placeholder="Cari judul project"
-                aria-label="Cari judul project"
-                style="
-                    flex: 1;
-                    padding: 10px 12px;
-                    border: 1px solid #cccccc;
-                    border-radius: 6px;
-                "
-            >
-
-            <button
-                type="submit"
-                style="
-                    padding: 10px 16px;
-                    color: white;
-                    background: #2563eb;
-                    border: 0;
-                    border-radius: 6px;
-                    cursor: pointer;
-                "
-            >
-                Cari
-            </button>
-
-            @if ($search !== '')
-                <a
-                    href="{{ route('projects.index') }}"
-                    style="
-                        padding: 10px 12px;
-                        color: #374151;
-                        text-decoration: none;
-                    "
-                >
-                    Reset
-                </a>
-            @endif
-        </form>
-
-        @if (session('success'))
-            <div style="
-                padding: 14px 16px;
-                margin-bottom: 20px;
-                color: #166534;
-                background-color: #dcfce7;
-                border: 1px solid #86efac;
-                border-radius: 6px;
-            ">
-                {{ session('success') }}
+        {{-- Ringkasan dari retrieving aggregates di controller. --}}
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="card h-100"><div class="card-body">
+                    <div class="small text-muted">Total Project</div>
+                    <div class="fs-4 fw-bold">{{ $totalProjects }}</div>
+                </div></div>
             </div>
+            <div class="col-6 col-md-3">
+                <div class="card h-100"><div class="card-body">
+                    <div class="small text-muted">Published</div>
+                    <div class="fs-4 fw-bold">{{ $totalPublished }}</div>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card h-100"><div class="card-body">
+                    <div class="small text-muted">Dibuat Hari Ini</div>
+                    <div class="fs-4 fw-bold">{{ $totalToday }}</div>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card h-100"><div class="card-body">
+                    <div class="small text-muted">Total Anggaran</div>
+                    <div class="fs-6 fw-bold">Rp {{ number_format($totalBudget, 2, ',', '.') }}</div>
+                </div></div>
+            </div>
+        </div>
+
+        @if ($latestProject)
+            <p class="small text-muted">
+                Project terbaru: <strong>{{ $latestProject->title }}</strong>
+                · ID terbesar: {{ $maxId }}
+            </p>
         @endif
 
-        @forelse ($projects as $project)
-            <article style="
-                padding: 22px;
-                margin-bottom: 18px;
-                background-color: white;
-                border: 1px solid #dddddd;
-                border-radius: 8px;
-            ">
-                <h2 style="margin-top: 0; margin-bottom: 8px;">
-                    <a
-                        href="{{ route('projects.show', $project->id) }}"
-                        style="color: #2563eb; text-decoration: none;"
-                    >
-                        {{ $project->title }}
-                    </a>
-                </h2>
-
-                <p style="
-                    margin-top: 0;
-                    color: #6b7280;
-                    font-size: 14px;
-                ">
-                    Dibuat pada
-                    {{ $project->created_at->format('d-m-Y H:i') }}
-                </p>
-
-                <p style="line-height: 1.7;">
-                    {{ \Illuminate\Support\Str::limit($project->description, 180) }}
-                </p>
-
-                <a
-                    href="{{ route('projects.show', $project->id) }}"
-                    style="color: #2563eb; text-decoration: none;"
-                >
-                    Lihat detail
-                </a>
-            </article>
-        @empty
-            <div style="
-                padding: 30px;
-                text-align: center;
-                background-color: white;
-                border: 1px dashed #9ca3af;
-                border-radius: 8px;
-            ">
-                <h2>
-                    {{ $search !== '' ? 'Project tidak ditemukan' : 'Belum ada project' }}
-                </h2>
-
-                <p>
-                    {{ $search !== '' ? 'Coba kata kunci lain.' : 'Tambahkan data project melalui form tambah project.' }}
-                </p>
-            </div>
-        @endforelse
-
-        @if ($projects->hasPages())
-            <div
-                role="navigation"
-                aria-label="Halaman project"
-                style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 12px;
-                    margin-top: 24px;
-                "
+        {{-- Search box mengarah ke route projects.search. --}}
+        <form action="{{ route('projects.search') }}" method="GET" class="d-flex gap-2 mb-3">
+            <input
+                type="text"
+                name="kata"
+                class="form-control"
+                placeholder="Cari judul atau deskripsi ..."
+                aria-label="Cari project"
             >
-                @if ($projects->onFirstPage())
-                    <span>Sebelumnya</span>
-                @else
-                    <a href="{{ $projects->previousPageUrl() }}">Sebelumnya</a>
-                @endif
+            <input type="hidden" name="per_page" value="{{ $perPage }}">
+            <button type="submit" class="btn btn-primary">Cari</button>
+        </form>
 
-                <span>
-                    Halaman {{ $projects->currentPage() }}
-                    dari {{ $projects->lastPage() }}
-                </span>
+        {{-- Filter status dan jumlah data per halaman. --}}
+        <form action="{{ route('projects.index') }}" method="GET" class="d-flex flex-wrap gap-2 align-items-center mb-4">
+            <label for="status" class="small">Status</label>
+            <select id="status" name="status" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                <option value="" @selected($status === '')>Semua</option>
+                <option value="published" @selected($status === 'published')>Published</option>
+                <option value="draft" @selected($status === 'draft')>Draft</option>
+            </select>
 
-                @if ($projects->hasMorePages())
-                    <a href="{{ $projects->nextPageUrl() }}">Berikutnya</a>
-                @else
-                    <span>Berikutnya</span>
-                @endif
+            <label for="per_page" class="small ms-2">Per halaman</label>
+            <select id="per_page" name="per_page" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                @foreach ([5, 10, 25] as $option)
+                    <option value="{{ $option }}" @selected($perPage === $option)>{{ $option }}</option>
+                @endforeach
+            </select>
+
+            <noscript><button type="submit" class="btn btn-sm btn-secondary">Terapkan</button></noscript>
+        </form>
+
+        @include('partials.flash')
+
+        @if ($projects->isEmpty())
+            <div class="alert alert-warning">
+                Belum ada project. Tambahkan lewat tombol Tambah Project.
             </div>
+        @else
+            @include('projects.partials.table')
         @endif
     </section>
 @endsection
