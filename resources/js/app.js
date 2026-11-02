@@ -1,1 +1,7 @@
-console.log('Website portfolio berhasil dijalankan.');
+import './bootstrap';
+
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();

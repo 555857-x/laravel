@@ -26,6 +26,7 @@
         <div style="
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
             gap: 18px;
         ">
             <a
@@ -55,6 +56,36 @@
             >
                 Projects
             </a>
+
+            {{-- Bagian ini berubah sesuai status login. --}}
+            @auth
+                <a
+                    href="{{ route('profile.saya') }}"
+                    style="color: #111827; font-weight: bold; text-decoration: none;"
+                >
+                    {{ Auth::user()->name }}
+                </a>
+
+                {{-- Logout wajib POST + CSRF, jadi pakai form, bukan link biasa. --}}
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button
+                        type="submit"
+                        class="btn btn-sm btn-outline-danger"
+                    >
+                        Logout
+                    </button>
+                </form>
+            @endauth
+
+            @guest
+                <a
+                    href="{{ route('login') }}"
+                    class="btn btn-sm btn-primary"
+                >
+                    Login
+                </a>
+            @endguest
         </div>
     </div>
 </nav>

@@ -16,12 +16,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // firstOrCreate mencegah error email duplikat saat db:seed dijalankan ulang.
-        User::firstOrCreate(
+        // Akun admin. Password wajib di-hash, kalau tidak login selalu gagal.
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('password123'),
+                'role' => 'admin',
+            ]
+        );
+
+        // Akun biasa untuk menguji EnsureAdmin (harus dapat 403 di /post).
+        User::updateOrCreate(
             ['email' => 'test@example.com'],
             [
                 'name' => 'Test User',
                 'password' => Hash::make('password'),
+                'role' => 'user',
             ]
         );
 
@@ -30,5 +41,5 @@ class DatabaseSeeder extends Seeder
             ProjectTableSeeder::class,
             RandomProjectSeeder::class,
         ]);
-    } 
+    }
 }
